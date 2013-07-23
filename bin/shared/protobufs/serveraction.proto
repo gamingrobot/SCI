@@ -1,0 +1,11 @@
+message ServerAction{
+  enum ActionType{
+    RCON_SEND = 1;
+    START = 2;
+    STOP = 3;
+    RESTART = 4;
+  }
+  required ActionType action = 1;
+  required string tag = 2;
+  optional string data = 3;
+}

@@ -1,0 +1,27 @@
+<config>
+    <server name="donner" type="srcds">
+        <game value="dod" />
+        <subtype value="" />
+        <dir value="C:\Servers\DOD1" />
+        <ip value="0.0.0.0" />
+        <port value="27015" />
+        <rcon_password value="waffles" />
+        <update_exe value="C:\srcds\hldsupdatetool.exe" />
+        <update_auto value="1" />
+        <cpu_affinity value="1,3" />
+        <high_priority value="1" />
+        <launch_args value="-console -game dod +maxplayers 24 +map dod_donner" />
+    </server>
+    <server name="foundry" type="srcds">
+        <game value="tf" />
+        <subtype value="gs" />
+        <ip value="0.0.0.0" />
+        <port value="27015" />
+        <rcon_password value="waffles" />
+        <update_auto value="1" />
+        <gs_username value="blah" />
+        <gs_password value="blah" />
+    </server>
+    <server name="fun" type="minecraft">
+    </server>
+</config>

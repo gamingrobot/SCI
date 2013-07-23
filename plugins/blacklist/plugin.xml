@@ -1,0 +1,6 @@
+<config>
+	<info name="IP Blacklist" author="GamingRobot32"/>
+	<pluginconfig>
+        <blacklist file="ip_blacklist.cfg" />
+	</pluginconfig>
+</config>

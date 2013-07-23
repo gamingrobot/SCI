@@ -1,0 +1,42 @@
+<config>
+    <!-- error, warning, info, debug, manager -->
+    <logger>
+        <level value="debug" />
+        <dir value="logs" />
+    </logger>
+    <!-- order matters, top loaded first -->
+    <plugins>
+        <plugin name="config" />
+        <plugin name="commandmanager" />
+        <plugin name="base" />
+        <plugin name="blacklist" />
+        <plugin name="ircon" />
+        <plugin name="iquery_rlog" />
+        <plugin name="ijson" />
+        <plugin name="servermanager" />
+    </plugins>
+    <!-- subconfigs for stuff that is changed between boxes
+        for things that are changed rarely use the plugin.xml -->
+    <subconfigs>
+        <servercfg file="servers.xml" />
+        <jsoncfg>
+            <ip value="0.0.0.0" />
+            <port value="37016" />
+            <pwd value="waffles" />
+        </jsoncfg>
+        <rconcfg>
+            <ip value="0.0.0.0" />
+            <port value="37015" />
+            <pwd value="waffles" />
+        </rconcfg>
+        <querycfg>
+            <hostname value="SCI Awesome" />
+            <mapname value="sci" />
+            <appid value="1337" />
+            <gamedir value="sci" />
+            <gamename value="Server Control Interface" />
+            <ip value="0.0.0.0" />
+            <port value="37015" />
+        </querycfg>
+    </subconfigs>
+</config>

@@ -1,0 +1,48 @@
+<config>
+    <!-- error, warning, info, debug, manager -->
+    <logger>
+        <level value="debug" />
+        <dir value="logs" />
+    </logger>
+    <!-- order matters, top loaded first -->
+    <plugins>
+        <plugin name="config" />
+        <plugin name="commandmanager" />
+        <plugin name="base" />
+        <plugin name="blacklist" />
+        <plugin name="ircon" />
+        <plugin name="iquery_rlog" />
+        <plugin name="ijson" />
+        <plugin name="scimanager" />
+    </plugins>
+    <!-- subconfigs for stuff that is changed between boxes
+        for things that are changed rarely use the plugin.xml -->
+    <subconfigs>
+        <sciservers>
+            <server name="gaming1" type="sci">
+                <ip value="192.168.0.135" />
+                <port value="37015" />
+                <password value="waffles" />
+            </server>
+        </sciservers>
+        <jsoncfg>
+            <ip value="192.168.0.135" />
+            <port value="47015" />
+            <pwd value="waffles" />
+        </jsoncfg>
+        <rconcfg>
+            <ip value="192.168.0.135" />
+            <port value="47016" />
+            <pwd value="waffles" />
+        </rconcfg>
+        <querycfg>
+            <hostname value="SCI Master" />
+            <mapname value="sci" />
+            <appid value="1337" />
+            <gamedir value="sci" />
+            <gamename value="Server Control Interface" />
+            <ip value="192.168.0.135" />
+            <port value="47016" />
+        </querycfg>
+    </subconfigs>
+</config>

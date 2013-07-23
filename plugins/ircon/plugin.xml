@@ -1,0 +1,6 @@
+<config>
+	<info name="Interface Rcon" author="GamingRobot32/Agent86"/>
+	<pluginconfig>
+		<failedattemps value="5" />
+	</pluginconfig>
+</config>

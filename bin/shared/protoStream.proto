@@ -1,0 +1,15 @@
+message ProtoStreamHeader {
+  required string key = 1; //auth key
+  required string module = 2;
+  required string message = 3;
+}
+
+message ProtoStreamAuth{
+  enum AuthType{
+    TOKEN = 1;
+    HASH = 2;
+    KEY = 3;
+  }
+  required AuthType auth_type = 1;
+  required string data = 2;
+}
