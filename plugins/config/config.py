@@ -18,6 +18,8 @@ class Config:
 
     def getConfig(self, key):
         subconfig = manager.getSubConfig(key)
+        if subconfig is None:
+            return None
         afile = subconfig.get("file")
         if afile is None:
             return subconfig

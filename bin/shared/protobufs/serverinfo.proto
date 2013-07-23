@@ -1,0 +1,23 @@
+message Server{
+  enum Status{
+    UNKNOWN = 0;
+    STARTED = 1;
+    STOPPED = 2;
+    UPDATING = 3;
+  }
+  required string tag = 1;
+  required string name = 2;
+  required string type = 3;
+  optional string game = 4;
+  optional Status status = 5;
+  required uint32 ip_address = 6;
+  required uint32 port = 7;
+  optional string hostname = 8;
+  optional int32 players_current = 9;
+  optional int32 players_max = 10;
+}
+
+message SCIServers{
+	required string tag = 1;
+	repeated Server server = 2;
+}

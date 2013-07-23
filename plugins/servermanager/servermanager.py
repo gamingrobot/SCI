@@ -1,15 +1,7 @@
 import servers.minecraft as s_minecraft
 import servers.srcds as s_srcds
 from twisted.internet import task
-
-
-class Tag:
-    none = None
-    server = 1 #server of the current instance 
-    sci = 2 #sci instance
-    sciserver = 3 #server that belongs to another sci instance
-    group = 4 
-
+import bin.shared.protobufs.serveraction_pb2 as serveraction_pb2
 
 
 class ServerManager:
@@ -20,47 +12,52 @@ class ServerManager:
 
         self._servers = {}
 
-        servers = manager.config.getConfig("servers").findall('server')
-        for servercfg in servers:
-            server_tag = servercfg.get("name")
-            server_type = servercfg.get("type")
-            config = {}
-            for child in servercfg:
-                config[child.tag] = child.get("value")
-            if server_type in self._servertypes.keys():
-                serverinst = self._servertypes[server_type](server_tag, config)
-                self._servers[server_tag] = {"config": config, "instance": serverinst, "type": server_type}
-
+        manager.messages.registerMessage(serveraction_pb2.ServerAction, self.messageServerAction)
+        #rcon_send, rcon_sendex
+        manager.commands.registerCommand("rcon_send", self.tagCommand, help="rcon_send <servertag> <command> <args>")
+        #get_tags
+        manager.commands.registerCommand("get_tags", self.getTagsCommand, help="get_tags")
+        #restart, start, status, stop, update
+        manager.commands.registerCommand("start", self.tagCommand, help="start <servertag>")
+        manager.commands.registerCommand("stop", self.tagCommand, help="stop <servertag>")
+        manager.commands.registerCommand("restart", self.tagCommand, help="restart <servertag>")
+        manager.commands.registerCommand("update", self.tagCommand, help="update <servertag>")
+        manager.commands.registerCommand("checkupdate", self.tagCommand, help="checkupdate <servertag>")
+        manager.commands.registerCommand("status", self.tagCommand, help="status <servertag>")
+        manager.commands.registerCommand("get_server_log", self.tagCommand, help="get_server_log <servertag> <lines>")
+        #server_tag
+        manager.commands.registerCommand("server_tag", self.serverTagCommand, help="server_tag <ip> <port>")
 
         manager.iprotostream.registerConnect(self.sendTagData)
+        
+        serverscfg = manager.config.getConfig("servers")
+        if serverscfg is not None:
+            servers = serverscfg.findall('server')
+            for servercfg in servers:
+                server_tag = servercfg.get("name")
+                server_type = servercfg.get("type")
+                config = {}
+                for child in servercfg:
+                    config[child.tag] = child.get("value")
+                if server_type in self._servertypes.keys():
+                    serverinst = self._servertypes[server_type](server_tag, config)
+                    self._servers[server_tag] = {"config": config, "instance": serverinst, "type": server_type}
 
-        #start the servers
-        #for server_tag in self._servers.keys():
-        #    self.tagCommand("start", [server_tag])
+            #start the servers
+            #for server_tag in self._servers.keys():
+            #    self.tagCommand("start", [server_tag])
 
-        #check servers
-        self.servercheckerloop = task.LoopingCall(self.checkServer)
-        self.servercheckerloop.start(60.0) # call every 60 seconds
-
-        #rcon_send, rcon_sendex
-        manager.commandmanager.registerCommand("rcon_send", self.tagCommand, help="rcon_send <servertag> <command> <args>")
-        #get_tags
-        manager.commandmanager.registerCommand("get_tags", self.getTagsCommand, help="get_tags")
-        #restart, start, status, stop, update
-        manager.commandmanager.registerCommand("start", self.tagCommand, help="start <servertag>")
-        manager.commandmanager.registerCommand("stop", self.tagCommand, help="stop <servertag>")
-        manager.commandmanager.registerCommand("restart", self.tagCommand, help="restart <servertag>")
-        manager.commandmanager.registerCommand("update", self.tagCommand, help="update <servertag>")
-        manager.commandmanager.registerCommand("checkupdate", self.tagCommand, help="checkupdate <servertag>")
-        manager.commandmanager.registerCommand("status", self.tagCommand, help="status <servertag>")
-        manager.commandmanager.registerCommand("get_server_log", self.tagCommand, help="get_server_log <servertag> <lines>")
-        #server_tag
-        manager.commandmanager.registerCommand("server_tag", self.serverTagCommand, help="server_tag <ip> <port>")
+            #check servers
+            self.servercheckerloop = task.LoopingCall(self.checkServer)
+            self.servercheckerloop.start(60.0) # call every 60 seconds
 
 
     """general functions"""
     def destroy(self, callback):
         self.servercheckerloop.stop()
+
+    def messageServerAction(self, message):
+        print message
 
     def checkServer(self):
         #do ping checks

@@ -3,14 +3,15 @@ from twisted.web.resource import Resource
 
 
 class ProtoBufResource(Resource):
-    def __init__(self, isRegistered, processMessage):
+    def __init__(self, getProto, processMessage, apikeys):
         self.handler = ProtoStreamHandler()
-        self.isRegistered = isRegistered
+        self.getProto = getProto
         self.processMessage = processMessage
+        self.apiKeys = apikeys
 
     isLeaf = True
     def render_GET(self, request):
-        print "getReceived", request
+        print "getReceived"
         if "protoStream" in request.args.keys(): #just a normal stream
             data = request.args['protoStream'][0]
             response = self.handleProtoStream(data)
@@ -19,12 +20,15 @@ class ProtoBufResource(Resource):
         return ""
 
     def handleProtoStream(self, data):
-        header, message = self.handler.unpackProtoStream(data, self.isRegistered)
-        if header.key == "800e6e356840e38362ae625307437261035db6ed08277159ab7499c1a29e7db9": #TODO
+        header, message = self.handler.unpackProtoStream(data, self.getProto)
+        if header is None or message is None:
+            return None
+        if header.key in self.apiKeys:
             try:
                 response = self.processMessage(header, message)
-                return self.handler.packProtoStream(header.key, response)
+                if response is not None:
+                    return self.handler.packProtoStream(header.key, response)
             except:
-                return ""
+                return None
         else:
             print "bro you aint from around here"

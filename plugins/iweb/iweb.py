@@ -18,7 +18,12 @@ class InterfaceWeb:
         #sockjsport
         sockjsport = int(manager.config.getValue(protostreamcfg, 'sockjsport', default=37017))
 
-        proto = ProtoBufResource(manager.messagemanager.isRegistered, manager.messagemanager.proccessMessage)
+        apicfg= protostreamcfg.find('apikeys').findall('key')
+        apiKeys = []
+        for apikeycfg in apicfg:
+            apiKeys.append(apikeycfg.get("value"))
+
+        proto = ProtoBufResource(manager.messages.getProto, manager.messages.proccessMessage, apiKeys)
         site = Site(proto)
         site.displayTracebacks = False
         reactor.listenTCP(port, site, 50)

@@ -4,10 +4,10 @@ from test import Test
 
 class Base:
     def __init__(self, xml):
-        manager.commandmanager.registerCommand("about", self.aboutCommand)
-        manager.commandmanager.registerCommand("plugins", self.pluginsCommand)
-        manager.commandmanager.registerCommand("restart_sci", self.restartSCI)
-        manager.commandmanager.registerCommand("echo", self.echoCommand)
+        manager.commands.registerCommand("about", self.aboutCommand)
+        manager.commands.registerCommand("plugins", self.pluginsCommand)
+        manager.commands.registerCommand("restart_sci", self.restartSCI)
+        manager.commands.registerCommand("echo", self.echoCommand)
         Test()
 
     def aboutCommand(self, command, args):

@@ -26,7 +26,7 @@ class InterfaceRcon:
         self.rconport = reactor.listenTCP(port, self.rcon, interface=ip)
 
     def processCommand(self, source, data):
-        ret = manager.commandmanager.processCommand(source, data)
+        ret = manager.commands.processCommand(source, data)
         #process return data
         if isinstance(ret, tuple):
             return str(ret[1]) + "\n" + str(ret[0])

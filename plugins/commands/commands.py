@@ -2,7 +2,7 @@ import shlex
 import inspect
 
 
-class CommandManager:
+class Commands:
     def __init__(self, xml):
         self._commands = {}
         self._plugins = {}

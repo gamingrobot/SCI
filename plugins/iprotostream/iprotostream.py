@@ -16,8 +16,9 @@ class InterfaceProtoStream:
         if password is None:
             log.warning("NO SCI PASSWORD SET")
 
-        self.protofactory = ProtoBufFactory(manager.isMaster, password, manager.messagemanager.isRegistered, manager.messagemanager.proccessMessage, manager.blacklist.blacklist, self.fireConnect)
-        if manager.isMaster:
+        isMaster = manager.isMaster
+        self.protofactory = ProtoBufFactory(isMaster, password, manager.messages.getProto, manager.messages.proccessMessage, manager.blacklist.blacklist, self.fireConnect)
+        if isMaster:
             log.info("setting up protostream server on ", ip, ":", port)
             self.protoport = reactor.listenTCP(port, self.protofactory, interface=ip)
         else:

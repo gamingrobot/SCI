@@ -1,6 +1,6 @@
 class Blacklist:
     def __init__(self, xml):
-        manager.commandmanager.registerCommand("blacklist", self.blacklistCommand, help="blacklist <add|remove|update> <ip>")
+        manager.commands.registerCommand("blacklist", self.blacklistCommand, help="blacklist <add|remove|update> <ip>")
         self._file = manager.config.getValue(xml, 'blacklist', subkey='file', default='ip_blacklist.cfg')
         self.blacklist = self.readBlacklistFile(self._file)
 

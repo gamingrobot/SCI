@@ -57,24 +57,26 @@ class ProtoBufProtocol(LineReceiver):
             self.factory.fireConnect()
 
     def handleProtoStream(self, data):
-        header, message = self.handler.unpackProtoStream(data, self.factory.isRegistered)
+        header, message = self.handler.unpackProtoStream(data, self.factory.getProto)
+        if header is None or message is None:
+            return None
         if header.key == self.authkey:
             try:
                 response = self.factory.processMessage(header, message)
                 return self.handler.packProtoStream(self.authkey, response)
             except:
-                return ""
+                return None
         else:
             print "bro you aint from around here"
 
 
 class ProtoBufFactory(ClientFactory):
     protocol = ProtoBufProtocol
-    def __init__(self, isServer, password, isRegistered, processMessage, blacklist, fireconnect):
+    def __init__(self, isServer, password, getProto, processMessage, blacklist, fireconnect):
         self.protocols = []
         self.password = password
         self.isServer = isServer
-        self.isRegistered = isRegistered
+        self.getProto = getProto
         self.processMessage = processMessage
         self.blacklist = blacklist
         self.fireConnect = fireconnect

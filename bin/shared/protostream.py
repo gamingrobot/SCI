@@ -55,7 +55,6 @@ class ProtoStreamHandler:
         header = protoStream_pb2.ProtoStreamHeader()
         self.decodeProto(data[0], header)
         #message protobuf
-        print header
         messagepath = "%s_pb2.%s" % (header.module, header.message)
         registered = getProto(messagepath)
         if registered is not None:
@@ -63,7 +62,7 @@ class ProtoStreamHandler:
             self.decodeProto(data[1], entry)
             return header, entry
         else:
-            return None
+            return None, None
 
     def unpackAuth(self, data):
         protoauth = protoStream_pb2.ProtoStreamAuth()

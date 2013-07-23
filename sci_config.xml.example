@@ -7,7 +7,7 @@
     <!-- order matters, top loaded first -->
     <plugins>
         <plugin name="config" />
-        <plugin name="commandmanager" />
+        <plugin name="commands" />
         <plugin name="base" />
         <plugin name="blacklist" />
         <plugin name="ircon" />

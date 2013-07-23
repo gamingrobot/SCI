@@ -16,7 +16,6 @@ class Manager(object):
         self._plugins_info = {}
         self._delayedplugins = []
         self._allunloaded = False
-        self._stopstate = None
         self.isMaster = False
         self._sciName = self._config.find("name").get("value")
         
@@ -121,6 +120,14 @@ class Manager(object):
     #get config data out of main xml by key
     def getSubConfig(self, key):
         return self._config.find('subconfigs').find(key)
+
+    #returns true or false if a plugin is loaded
+    def pluginLoaded(self, plugin):
+        plugin = plugin.lower()
+        if plugin in self._plugins:
+            return True
+        else:
+            return False
 
     #returns all plugin inffos
     def getPluginsInfo(self):
