@@ -28,9 +28,6 @@ SCI is a tool for managing one or more server/daemon instances across server box
 * Clone this repo into a directory on your server
 * Install dependencies
 
-## Configure
-[See Wiki Page](https://github.com/GamingRobot/SCI/wiki/Configuration)
-
 ## Running
 `python main.py sci_configname.xml`
 
